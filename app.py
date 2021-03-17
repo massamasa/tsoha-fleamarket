@@ -22,3 +22,20 @@ def registerresult():
     db.session.execute(sql, {"username":username, "password":password})
     db.session.commit()
     return render_template("registerresult.html", username=request.form["username"])
+
+@app.route("/loginform")
+def loginform():
+    return render_template("loginform.html")
+
+@app.route("/loginresult", methods=["POST"])
+def login():
+    username = request.form["username"]
+    password = request.form["password"]
+    sql = "SELECT password from users WHERE username=:username"
+    result = db.session.execute(sql, {"username":username})
+    user = result.fetchone()
+    if user == None:
+        return "No user with that name"
+    elif user["password"] != password:
+        return "Wrong password"
+    return render_template("loginresult.html", username=request.form["username"])
