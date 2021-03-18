@@ -11,3 +11,6 @@ A web app for selling items from person to person. Each user is an admin or regu
 - A user may search for items with key words
 - A user can send a message, private or public, to another user.
 - An admin can remove accounts, listings and public messages.
+
+## Postgresql schema
+CREATE TABLE users (id SERIAL PRIMARY KEY, username TEXT, password TEXT);

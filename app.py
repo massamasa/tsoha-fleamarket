@@ -2,6 +2,7 @@ from flask import Flask
 from flask import redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 app.secret_key = getenv("SECRET_KEY")
@@ -25,15 +26,12 @@ def registerresult():
     user = result.fetchone()
     if user != None:
         return "User name already taken"
+    hash_value = generate_password_hash(password)
     sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
-    db.session.execute(sql, {"username":username, "password":password})
+    db.session.execute(sql, {"username":username, "password":hash_value})
     db.session.commit()
     session["username"] = username
     return redirect("/")
-
-@app.route("/loginform")
-def loginform():
-    return render_template("loginform.html")
 
 @app.route("/loginresult", methods=["POST"])
 def login():
@@ -44,7 +42,7 @@ def login():
     user = result.fetchone()
     if user == None:
         return "No user with that name"
-    elif user["password"] != password:
+    elif not check_password_hash(user["password"], password):
         return "Wrong password"
     session["username"] = username
     return redirect("/")
