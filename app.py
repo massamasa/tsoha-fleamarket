@@ -9,6 +9,15 @@ app.secret_key = getenv("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///tsoha"
 db = SQLAlchemy(app)
 
+@app.route("/searchresult", methods=["GET"])
+def result():
+    query = request.args["query"]
+    sql = "SELECT * FROM sales_ads WHERE title LIKE :query"
+    result = db.session.execute(sql, {"query":"%"+query+"%"})
+    sales_ads = result.fetchall()
+    return render_template("result.html", sales_ads=sales_ads)
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -16,6 +25,24 @@ def index():
 @app.route("/registerform")
 def registerform():
     return render_template("registerform.html")
+
+
+@app.route("/salesadform")
+def postsalesady():
+    return render_template("salesadform.html")
+
+@app.route("/insertsalesad", methods=["POST"])
+def insertsalesad():
+    author = session["username"]
+    title = request.form["title"]
+    content = request.form["content"]
+    price_in_cents = int(float(request.form["price"])*100)
+
+    sql = "INSERT INTO sales_ads (author, title, content, price_in_cents) VALUES (:author, :title, :content, :price_in_cents)"
+    db.session.execute(sql, {"author":author, "title":title, "content":content, "price_in_cents":price_in_cents})
+    db.session.commit()
+    
+    return redirect("/")
 
 @app.route("/registerresult", methods=["POST"])
 def registerresult():
@@ -51,3 +78,4 @@ def login():
 def logout():
     del session["username"]
     return redirect("/")
+
