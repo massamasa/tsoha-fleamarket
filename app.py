@@ -10,12 +10,12 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///tsoha"
 db = SQLAlchemy(app)
 
 @app.route("/searchresult", methods=["GET"])
-def result():
+def searchresult():
     query = request.args["query"]
     sql = "SELECT * FROM sales_ads WHERE title LIKE :query"
     result = db.session.execute(sql, {"query":"%"+query+"%"})
     sales_ads = result.fetchall()
-    return render_template("result.html", sales_ads=sales_ads)
+    return render_template("searchresult.html", sales_ads=sales_ads)
 
 
 @app.route("/")

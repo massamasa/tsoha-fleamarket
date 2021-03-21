@@ -1,18 +1,26 @@
 {% if session.username %}
 <title>Flea Market</title>
 <h1> Welcome to the Flea Market app, {{session.username}}!</h1>
+<br>
+<a href="/salesadform">Post a new ad</a>
+<br>
+<form action="/searchresult" method="GET">
+    <input type="text" name="query">
+    <input type="submit" value="Search">
+</form>
+<br><br>
 <a href="/logout">Log out</a>
 {% else %}
 <title>Flea Market -Log in</title>
 <h1>Log in</h1>
 <form action="/loginresult" method="POST">
-User name:
-<input type="text" name="username">
-<br>
-Password:
-<input type="password" name="password">
-<br>
-<input type="submit" value="Log in">
+    User name:
+    <input type="text" name="username">
+    <br>
+    Password:
+    <input type="password" name="password">
+    <br>
+    <input type="submit" value="Log in">
 </form>
 <a href="/registerform">Register new account</a>
 {% endif %}
