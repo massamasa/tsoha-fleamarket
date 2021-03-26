@@ -22,6 +22,10 @@ def searchresult():
 def index():
     return render_template("index.html")
 
+@app.route("/myaccount")
+def myaccount():
+    return account(session["id"])
+
 @app.route("/account/<int:id>", methods=["GET"])
 def account(id):
     sql = "SELECT * from users WHERE id=:id"
@@ -31,7 +35,6 @@ def account(id):
 
 @app.route("/changepassword", methods=["GET", "POST"])
 def changepassword():
-    print("changepassword")
     sql = "SELECT password from users WHERE id=:id"
     result = db.session.execute(sql, {"id":session["id"]})
     user = result.fetchone()
@@ -43,7 +46,7 @@ def changepassword():
             db.session.commit()
     else:
         return "old password incorrect"
-    return "password changed"
+    return myaccount()
 
 
 @app.route("/registerform")
