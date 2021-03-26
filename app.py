@@ -22,13 +22,37 @@ def searchresult():
 def index():
     return render_template("index.html")
 
+@app.route("/account/<int:id>", methods=["GET"])
+def account(id):
+    sql = "SELECT * from users WHERE id=:id"
+    result = db.session.execute(sql, {"id":id})
+    user = result.fetchone()
+    return render_template("account.html", id=id, username=user["username"])
+
+@app.route("/changepassword", methods=["GET", "POST"])
+def changepassword():
+    print("changepassword")
+    sql = "SELECT password from users WHERE id=:id"
+    result = db.session.execute(sql, {"id":session["id"]})
+    user = result.fetchone()
+    if check_password_hash(user["password"], request.form["passwordold"]):
+        if (request.form["passwordnew"] == request.form["passwordnewre"]):
+            sql = "UPDATE users SET password =:newpassword WHERE id=:id"
+            newpasswordhash = generate_password_hash(request.form["passwordnew"])
+            db.session.execute(sql, {"newpassword":newpasswordhash, "id":session["id"]})
+            db.session.commit()
+    else:
+        return "old password incorrect"
+    return "password changed"
+
+
 @app.route("/registerform")
 def registerform():
     return render_template("registerform.html")
 
 
 @app.route("/salesadform")
-def postsalesady():
+def postsalesad():
     return render_template("salesadform.html")
 
 @app.route("/insertsalesad", methods=["POST"])
@@ -48,7 +72,7 @@ def insertsalesad():
 def registerresult():
     username = request.form["username"]
     password = request.form["password"]
-    sql = "SELECT username from users WHERE username=:username"
+    sql = "SELECT * from users WHERE username=:username"
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     if user != None:
@@ -57,14 +81,13 @@ def registerresult():
     sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
     db.session.execute(sql, {"username":username, "password":hash_value})
     db.session.commit()
-    session["username"] = username
     return redirect("/")
 
 @app.route("/loginresult", methods=["POST"])
 def login():
     username = request.form["username"]
     password = request.form["password"]
-    sql = "SELECT password from users WHERE username=:username"
+    sql = "SELECT * from users WHERE username=:username"
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     if user == None:
@@ -72,6 +95,8 @@ def login():
     elif not check_password_hash(user["password"], password):
         return "Wrong password"
     session["username"] = username
+    session["id"] = user["id"]
+    print(session["id"])
     return redirect("/")
 
 @app.route("/logout")

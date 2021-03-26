@@ -4,6 +4,7 @@ A web app for selling items from person to person. Each user is an admin or regu
 - A user can create a new account
 - A user can log in and out
 - A user can remove their account
+- A user can change their password
 - A user can create an entry for an item to sell
 - A user can edit or remove their own sales entry
 - A user can view individual sales entries in detail

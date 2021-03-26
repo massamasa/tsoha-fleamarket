@@ -1,0 +1,21 @@
+Username: {{username}}
+<br>
+{% if session.id == id %}
+Change password:
+<form action="/changepassword" method="POST">
+    Enter current password:
+    <input type="password" name="passwordold">
+    <br>
+    Enter new password:  
+    <input type="password" name="passwordnew">
+    <br>
+    Re-enter new password:
+    <input type="password" name="passwordnewre">
+    <br>
+    <input type="submit" value="Change password">
+    <br>
+</form>
+Delete account:
+{% else %}
+Contact: to be implemented
+{% endif %}
