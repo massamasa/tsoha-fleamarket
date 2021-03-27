@@ -1,0 +1,38 @@
+{% block navbar %}
+<meta name="viewport" content="width=device-width, initial-scale=2, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<title>Flea Market</title>
+<nav class="navbar navbar-expand-sm navbar-light">
+
+    <a class="navbar-brand" href="/">Flea Market</a>
+
+    <ul class="navbar-nav">
+        {% if session.username %}
+        <li class="nav-item">
+            <a class="nav-link" href="/salesadform">Post a new ad</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/myaccount">My account</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/logout">Log out</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="/loginform">Log in</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/registerform">Register</a>
+        </li>
+        {% endif %}
+        <li class="nav-item px-3">
+            <form action="/searchresult" method="GET">
+                <input type="text" name="query">
+                <input type="submit" value="Search">
+            </form>
+        </li>
+    </ul>
+</nav>
+{% endblock %}
+{% block content %}
+{% endblock %}

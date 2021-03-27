@@ -1,12 +1,25 @@
+{% extends "bootstrap/base.html" %}
+{{ super() }}
+{% block content %}
 <title>Flea Market - Post ad</title>
 <h1>Post ad</h1>
 <form action="/insertsalesad" method="POST">
-Title:
-<input type="text" name="title">
-<br>
-Price:
-<input type="number" name="price">
-<br>
-<textarea name="content" rows="3" cols="40"></textarea>
-<input type="submit" value="Post">
+
+    <div class="form-group col-2">
+        Title:
+        <input type="text" class="form-control" id="inputTitle" name="title">
+    </div>
+
+    <div class="form-group col-2">
+        Price:
+        <input type="number" class="form-control" id="inputPrice" name="price">
+    </div>
+    <div class="form-group col-2">
+        Description:
+        <textarea name="content" rows="3" cols="40"></textarea>
+    </div>
+    <div class="form-group col-2">
+        <input type="submit" class="btn btn-primary" value="Post ad">
+    </div>
 </form>
+{% endblock %}

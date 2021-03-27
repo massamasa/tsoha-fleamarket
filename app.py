@@ -22,6 +22,10 @@ def searchresult():
 def index():
     return render_template("index.html")
 
+@app.route("/loginform")
+def loginform():
+    return render_template("loginform.html")
+
 @app.route("/myaccount")
 def myaccount():
     return account(session["id"])
@@ -84,7 +88,7 @@ def registerresult():
     sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
     db.session.execute(sql, {"username":username, "password":hash_value})
     db.session.commit()
-    return redirect("/")
+    return redirect("/loginform")
 
 @app.route("/loginresult", methods=["POST"])
 def login():

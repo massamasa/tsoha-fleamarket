@@ -1,21 +1,38 @@
-Username: {{username}}
+{% extends "bootstrap/base.html" %}
+{{ super() }}
+{% block content %}
+<div class="form-group col-2">
+    <h3>Username: {{username}}</h3>
+</div>
 <br>
 {% if session.id == id %}
-Change password:
-<form action="/changepassword" method="POST">
+
+<form action="/changepassword/" method="POST">
+    <div class="form-group col-2">
+        <h2>Change password</h2>
+    </div>
     Enter current password:
-    <input type="password" name="passwordold">
-    <br>
-    Enter new password:  
-    <input type="password" name="passwordnew">
-    <br>
+    <div class="form-group col-2">
+        <input type="password" class="form-control" id="inputPassword" name="passwordold">
+    </div>
+
+    Enter new password:
+    <div class="form-group col-2">
+        <input type="password" class="form-control" id="inputPasswordNew" name="passwordnew">
+    </div>
+
     Re-enter new password:
-    <input type="password" name="passwordnewre">
-    <br>
-    <input type="submit" value="Change password">
-    <br>
+    <div class="form-group col-2">
+        <input type="password" class="form-control" id="inputPasswordNewRe" name="passwordnewre">
+    </div>
+
+    <div class="form-group col-2">
+        <input type="submit" class="btn btn-primary" value="Change password">
+    </div>
+
 </form>
-Delete account:
+Delete account: to be implemented
 {% else %}
 Contact: to be implemented
 {% endif %}
+{% endblock %}

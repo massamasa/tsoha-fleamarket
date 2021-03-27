@@ -1,20 +1,18 @@
 {% extends "bootstrap/base.html" %}
 {{ super() }}
 {% block content %}
-
-<title>Flea Market - Registration</title>
-<h1>Register a new account</h1>
-<form action="/registerresult" method="POST">
-    User name:
+<h1>Log in</h1>
+<form action="/loginresult" method="POST">
     <div class="form-group col-2">
+        <label for="username">Username</label>
         <input type="text" class="form-control" id="inputUsername" name="username">
     </div>
-    Password:
     <div class="form-group col-2">
+        <label for="inputPassword">Password</label>
         <input type="password" class="form-control" id="inputPassword" name="password">
     </div>
     <div class="form-group col-2">
-        <input type="submit" class="btn btn-primary" value="Register account">
+        <button type="submit" class="btn btn-primary">Login</button>
     </div>
 </form>
 {% endblock %}
