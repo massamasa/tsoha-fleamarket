@@ -22,7 +22,7 @@ def adpage(id):
     sql = "SELECT * from sales_ads WHERE id=:id"
     result = db.session.execute(sql, {"id":id})
     ad = result.fetchone()
-    return render_template("adpage.html", ad=ad, user_id=ad[7])
+    return render_template("adpage.html", ad=ad)
 
 @app.route("/")
 def index():
