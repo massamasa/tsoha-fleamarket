@@ -17,6 +17,12 @@ def searchresult():
     sales_ads = result.fetchall()
     return render_template("searchresult.html", sales_ads=sales_ads)
 
+@app.route("/adpage/<int:id>", methods=["GET"])
+def adpage(id):
+    sql = "SELECT * from sales_ads WHERE id=:id"
+    result = db.session.execute(sql, {"id":id})
+    ad = result.fetchone()
+    return render_template("adpage.html", ad=ad, user_id=ad[7])
 
 @app.route("/")
 def index():
@@ -68,9 +74,8 @@ def insertsalesad():
     title = request.form["title"]
     content = request.form["content"]
     price_in_cents = int(float(request.form["price"])*100)
-
-    sql = "INSERT INTO sales_ads (author, title, content, price_in_cents) VALUES (:author, :title, :content, :price_in_cents)"
-    db.session.execute(sql, {"author":author, "title":title, "content":content, "price_in_cents":price_in_cents})
+    sql = "INSERT INTO sales_ads (author, title, content, price_in_cents, user_id) VALUES (:author, :title, :content, :price_in_cents, :user_id)"
+    db.session.execute(sql, {"author":author, "title":title, "content":content, "price_in_cents":price_in_cents, "user_id":session["id"]})
     db.session.commit()
     
     return redirect("/")

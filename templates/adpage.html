@@ -1,0 +1,27 @@
+{% extends "bootstrap/base.html" %}
+{{ super() }}
+{% block content %}
+<div class=container>
+    <div class="row">
+
+
+        <div class="col-4">
+            <h2>{{ ad[2] }}</h2>
+            {{ ad[3] }}
+        </div>        
+        <div class="col-3">
+            <table class="table">
+                <tr>
+                    <th scope="col">
+                        Author</th>
+                    <th scope="col">Price</th>
+                </tr>
+                <tr>
+                    <th scope="col"><a href="/account/{{ad[7]}}"> {{ ad[1] }}</a></th>
+                    <th scope="col">{{ ad[4]/100 }}</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
