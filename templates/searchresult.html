@@ -2,13 +2,14 @@
 {{ super() }}
 {% block content %}
 <h1>Search result</h1>
-<div class="form-group col-2">
+<div class="col-2">
     <table class="table" style="width:100%">
         <tr>
             <th scope="col">Author</th>
             <th scope="col">Title</th>
             <th scope="col">Description</th>
             <th scope="col">Price</th>
+            <th scope="col">Time posted</th>
         </tr>
         {% for ad in sales_ads %}
         <tr>
@@ -16,6 +17,7 @@
             <th scope="col"><a href="/adpage/{{ad[0]}}">{{ ad[2] }}</a></th>
             <th scope="col">{{ ad[3] }}</th>
             <th scope="col">{{ ad[4]/100 }}€</th>
+            <th scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</th>
         </tr>
         {% endfor %}
     </table>

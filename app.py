@@ -3,6 +3,7 @@ from flask import redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
 from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import datetime, timezone
 
 app = Flask(__name__)
 app.secret_key = getenv("SECRET_KEY")
@@ -16,6 +17,10 @@ def searchresult():
     result = db.session.execute(sql, {"query":"%"+query+"%"})
     sales_ads = result.fetchall()
     return render_template("searchresult.html", sales_ads=sales_ads)
+
+@app.route("/notification/<string:notification>")
+def notification(notification):
+    return render_template("notification.html", notification=notification)
 
 @app.route("/adpage/<int:id>", methods=["GET"])
 def adpage(id):
@@ -54,9 +59,11 @@ def changepassword():
             newpasswordhash = generate_password_hash(request.form["passwordnew"])
             db.session.execute(sql, {"newpassword":newpasswordhash, "id":session["id"]})
             db.session.commit()
+        else:
+            return notification("Error: Passwords do not match")
     else:
-        return "old password incorrect"
-    return myaccount()
+        return notification("Error: Old password incorrect")
+    return myaccount("Success: Password changed")
 
 
 @app.route("/registerform")
@@ -70,12 +77,17 @@ def postsalesad():
 
 @app.route("/insertsalesad", methods=["POST"])
 def insertsalesad():
-    author = session["username"]
+    if len(request.form["title"]) == 0:
+        return notification("Error: Title cannot be empty")
+    print(request.form["price"])
+    if len(request.form["price"]) == 0:
+        return notification("Error: Price cannot be empty")   
     title = request.form["title"]
     content = request.form["content"]
     price_in_cents = int(float(request.form["price"])*100)
-    sql = "INSERT INTO sales_ads (author, title, content, price_in_cents, user_id) VALUES (:author, :title, :content, :price_in_cents, :user_id)"
-    db.session.execute(sql, {"author":author, "title":title, "content":content, "price_in_cents":price_in_cents, "user_id":session["id"]})
+    dt = datetime.now(timezone.utc)
+    sql = "INSERT INTO sales_ads (author, title, content, price_in_cents, user_id, created_at, last_modified) VALUES (:author, :title, :content, :price_in_cents, :user_id, :dt, :dt)"
+    db.session.execute(sql, {"author":session["username"], "title":title, "content":content, "price_in_cents":price_in_cents, "user_id":session["id"], "dt":dt})
     db.session.commit()
     
     return redirect("/")
@@ -88,12 +100,12 @@ def registerresult():
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     if user != None:
-        return "User name already taken"
+        return notification("Error: User name already taken.")
     hash_value = generate_password_hash(password)
     sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
     db.session.execute(sql, {"username":username, "password":hash_value})
     db.session.commit()
-    return redirect("/loginform")
+    return notification("Success: New account registered.")
 
 @app.route("/loginresult", methods=["POST"])
 def login():
@@ -103,9 +115,9 @@ def login():
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     if user == None:
-        return "No user with that name"
+        return notification("Error: No user with that name")
     elif not check_password_hash(user["password"], password):
-        return "Wrong password"
+        return notification("Wrong password")
     session["username"] = username
     session["id"] = user["id"]
     print(session["id"])
