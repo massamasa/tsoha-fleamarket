@@ -1,21 +1,23 @@
 {% extends "bootstrap/base.html" %}
 {{ super() }}
 {% block content %}
-<hr>
-<table class="table" style="width:100%">
-    <tr>
-        <th scope="col">Author</th>
-        <th scope="col">Title</th>
-        <th scope="col">Description</th>
-        <th scope="col">Price</th>
-    </tr>
-    {% for ad in sales_ads %}
-    <tr>
-        <th scope="col"><a href="/account/{{ad[7]}}">{{ ad[1] }}</a></th>
-        <th scope="col"><a href="/adpage/{{ad[0]}}">{{ ad[2] }}</a></th>
-        <th scope="col">{{ ad[3] }}</th>
-        <th scope="col">{{ ad[4]/100 }}</th>
-    </tr>
-    {% endfor %}
-</table>
+<h1>Search result</h1>
+<div class="form-group col-2">
+    <table class="table" style="width:100%">
+        <tr>
+            <th scope="col">Author</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+        </tr>
+        {% for ad in sales_ads %}
+        <tr>
+            <th scope="col"><a href="/account/{{ad[7]}}">{{ ad[1] }}</a></th>
+            <th scope="col"><a href="/adpage/{{ad[0]}}">{{ ad[2] }}</a></th>
+            <th scope="col">{{ ad[3] }}</th>
+            <th scope="col">{{ ad[4]/100 }}€</th>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endblock %}

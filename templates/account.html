@@ -1,15 +1,14 @@
 {% extends "bootstrap/base.html" %}
 {{ super() }}
 {% block content %}
-<div class="form-group col-2">
-    <h3>Username: {{username}}</h3>
-</div>
-<br>
 {% if session.id == id %}
-
+<h1>My account</h1>
+<br>
 <form action="/changepassword" method="POST">
     <div class="form-group col-2">
-        <h2>Change password</h2>
+    <h3>Username: {{username}}</h3>
+    <br>
+    <h2>Change password</h2>
     </div>
     Enter current password:
     <div class="form-group col-2">
