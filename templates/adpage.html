@@ -23,7 +23,7 @@
             </table>
         </div>
     </div>
-    
+
     <div class="col-8">
         <h2>
             Messages
@@ -43,7 +43,7 @@
                 </td>
             </tr>
             {% for message in messages %}
-            {% if message[4] == false or ad[7] == session.id %}
+            {% if message[4] == false or (ad[7] == session.id or message[1] == session.id) %}
             <tr>
                 <td>
                     {% if message[4] %}
@@ -87,9 +87,9 @@
             <div class="form-group col-4">
                 <input type="submit" class="btn btn-primary" value="Post message">
             </div>
-        </form>    
+        </form>
         {% else %}
-            Log in to view messages or post your own!
+        Log in to view messages or post your own!
         {% endif %}
     </div>
 
