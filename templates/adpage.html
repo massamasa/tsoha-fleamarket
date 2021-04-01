@@ -8,8 +8,8 @@
         <div class="col-4">
             <h2>{{ ad[2] }}</h2>
             {{ ad[3] }}
-        </div>        
-        <div class="col-3">
+        </div>
+        <div class="col-4">
             <table class="table">
                 <tr>
                     <th scope="col">
@@ -23,5 +23,75 @@
             </table>
         </div>
     </div>
+    
+    <div class="col-8">
+        <h2>
+            Messages
+        </h2>
+        {% if session.id %}
+        <table class="table" style="width:100%">
+            <tr>
+                <td>
+                    Private / Public
+                </td>
+
+                <td>
+                    Author
+                </td>
+                <td>
+                    Message
+                </td>
+            </tr>
+            {% for message in messages %}
+            {% if message[4] == false or ad[7] == session.id %}
+            <tr>
+                <td>
+                    {% if message[4] %}
+                    Private
+                    {% else %}
+                    Public
+                    {% endif %}
+
+                </td>
+                <td>
+                    <h4> {{message[2]}}</h4>
+                </td>
+                <td>
+                    {{message[3]}}
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+    <div class="form-group row">
+        <form action="/postmessage/{{ad[0]}}" method="POST">
+            <h2>
+                Post a message
+            </h2>
+            <div class="form-group col-8">
+                <textarea name="content" rows="5" cols="75"></textarea>
+            </div>
+            <div class="form-check-inline col-2">
+                <input class="form-check-input" type="radio" name="privateRadio" id="privateRadio" value="1" checked>
+                <label class="form-check-label" for="privateRadio">
+                    Private
+                </label>
+            </div>
+            <div class="form-check-inline col-2">
+                <input class="form-check-input" type="radio" name="privateRadio" id="privateRadio2" value="2">
+                <label class="form-check-label" for="publicRadio">
+                    Public
+                </label>
+            </div>
+            <div class="form-group col-4">
+                <input type="submit" class="btn btn-primary" value="Post message">
+            </div>
+        </form>    
+        {% else %}
+            Log in to view messages or post your own!
+        {% endif %}
+    </div>
+
 </div>
 {% endblock %}

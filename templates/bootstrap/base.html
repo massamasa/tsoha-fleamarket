@@ -24,7 +24,11 @@
         <li class="nav-item">
             <a class="nav-link" href="/registerform">Register</a>
         </li>
+
         {% endif %}
+        <li class="nav-item">
+            <a class="nav-link" href="/searchresult?query=">List all ads</a>
+        </li>
         <li class="nav-item px-3">
             <form action="/searchresult" method="GET">
                 <input type="text" name="query">
@@ -34,6 +38,7 @@
     </ul>
 </nav>
 {% endblock %}
+
 <body style="background-color:#AFAFAF;">
     {% block content %}
     {% endblock %}

@@ -24,10 +24,14 @@ def notification(notification):
 
 @app.route("/adpage/<int:id>", methods=["GET"])
 def adpage(id):
-    sql = "SELECT * from sales_ads WHERE id=:id"
+    sql = "SELECT * from sales_ads WHERE id = :id"
     result = db.session.execute(sql, {"id":id})
     ad = result.fetchone()
-    return render_template("adpage.html", ad=ad)
+    sql = "SELECT * FROM messages WHERE (ad_id = :id)"
+    result = db.session.execute(sql, {"id":id})
+    messages = result.fetchall()
+    return render_template("adpage.html", ad=ad, messages=messages)
+    print("foo")
 
 @app.route("/")
 def index():
@@ -65,6 +69,17 @@ def changepassword():
         return notification("Error: Old password incorrect")
     return myaccount("Success: Password changed")
 
+@app.route("/postmessage/<int:ad_id>", methods=["POST"])
+def postmessage(ad_id):
+    private = request.form["privateRadio"]=="1"
+    content = request.form["content"]
+    if len(content) == 0:
+        return notification("Error: A message must have content")
+    sql = "INSERT INTO messages (ad_id, user_id, author_name, content, private) VALUES (:ad_id, :user_id, :author_name, :content, :private)"
+    db.session.execute(sql, {"ad_id":ad_id, "user_id":session["id"], "author_name":session["username"], "content":content, "private":private})
+    db.session.commit()
+    return redirect("/adpage/"+str(ad_id))
+
 
 @app.route("/registerform")
 def registerform():
@@ -79,7 +94,6 @@ def postsalesad():
 def insertsalesad():
     if len(request.form["title"]) == 0:
         return notification("Error: Title cannot be empty")
-    print(request.form["price"])
     if len(request.form["price"]) == 0:
         return notification("Error: Price cannot be empty")   
     title = request.form["title"]
@@ -120,7 +134,6 @@ def login():
         return notification("Wrong password")
     session["username"] = username
     session["id"] = user["id"]
-    print(session["id"])
     return redirect("/")
 
 @app.route("/logout")
