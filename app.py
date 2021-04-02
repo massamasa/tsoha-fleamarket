@@ -56,7 +56,7 @@ def adpage(id):
     sql = "SELECT * from sales_ads WHERE id = :id"
     result = db.session.execute(sql, {"id":id})
     ad = result.fetchone()
-    sql = "SELECT * FROM messages WHERE (ad_id = :id)"
+    sql = "SELECT * FROM messages WHERE (ad_id = :id) ORDER BY created_at DESC"
     result = db.session.execute(sql, {"id":id})
     messages = result.fetchall()
     return render_template("adpage.html", ad=ad, messages=messages)
@@ -104,8 +104,9 @@ def postmessage(ad_id):
     content = request.form["content"]
     if len(content) == 0:
         return notification("Error: A message must have content")
-    sql = "INSERT INTO messages (ad_id, user_id, author_name, content, private) VALUES (:ad_id, :user_id, :author_name, :content, :private)"
-    db.session.execute(sql, {"ad_id":ad_id, "user_id":session["id"], "author_name":session["username"], "content":content, "private":private})
+    dt = datetime.now(timezone.utc)
+    sql = "INSERT INTO messages (ad_id, user_id, author_name, content, private, created_at) VALUES (:ad_id, :user_id, :author_name, :content, :private, :dt)"
+    db.session.execute(sql, {"ad_id":ad_id, "user_id":session["id"], "author_name":session["username"], "content":content, "private":private, "dt":dt})
     db.session.commit()
     return redirect("/adpage/"+str(ad_id))
 

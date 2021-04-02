@@ -16,11 +16,16 @@
                     <th scope="col">
                         Author</th>
                     <th scope="col">Price</th>
+
+                    <th scope="col">Ad posted</th>
                 </tr>
                 <tr>
                     <th scope="col"><a href="/account/{{ad[7]}}"> {{ ad[1] }}</a></th>
                     <th scope="col">{{ ad[4]/100 }}</th>
+                    <th scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</th>
+                    
                 </tr>
+                
             </table>
         </div>
     </div>
@@ -42,6 +47,9 @@
                 <td>
                     Message
                 </td>
+                <td>
+                    Time posted
+                </td>
             </tr>
             {% for message in messages %}
             {% if message[4] == false or (ad[7] == session.id or message[1] == session.id) %}
@@ -59,6 +67,9 @@
                 </td>
                 <td>
                     {{message[3]}}
+                </td>
+                <td>
+                    {{message[5].strftime("%d.%m.%Y %H:%M")}}
                 </td>
             </tr>
             {% endif %}
