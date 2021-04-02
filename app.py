@@ -18,9 +18,24 @@ def searchresult():
     sales_ads = result.fetchall()
     return render_template("searchresult.html", sales_ads=sales_ads)
 
+@app.route("/deletemessage/<int:id>", methods=["GET", "POST"])
+def deletemessage(id):
+    sql = "SELECT user_id from messages WHERE id = :message_id"
+    result = db.session.execute(sql, {"message_id":id})
+    user = result.fetchone()
+    if user[0] == session["id"]:
+        sql = "DELETE FROM messages WHERE id = :message_id"
+        db.session.execute(sql, {"message_id":id})
+        db.session.commit()
+        return notification("Message deleted")
+    else:
+        return notification("Error: Not your message or ad")
+
+
+
 @app.route("/deleteaccount", methods=["GET", "POST"])
 def deleteaccount():
-    sql = "SELECT password from users WHERE id=:id"
+    sql = "SELECT password from users WHERE id = :id"
     result = db.session.execute(sql, {"id":session["id"]})
     user = result.fetchone()
     if check_password_hash(user["password"], request.form["passworddel"]):
@@ -60,7 +75,6 @@ def adpage(id):
     result = db.session.execute(sql, {"id":id})
     messages = result.fetchall()
     return render_template("adpage.html", ad=ad, messages=messages)
-    print("foo")
 
 @app.route("/")
 def index():

@@ -23,9 +23,9 @@
                     <th scope="col"><a href="/account/{{ad[7]}}"> {{ ad[1] }}</a></th>
                     <th scope="col">{{ ad[4]/100 }}</th>
                     <th scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</th>
-                    
+
                 </tr>
-                
+
             </table>
         </div>
     </div>
@@ -50,6 +50,9 @@
                 <td>
                     Time posted
                 </td>
+                <td>
+                    Delete?
+                </td>
             </tr>
             {% for message in messages %}
             {% if message[4] == false or (ad[7] == session.id or message[1] == session.id) %}
@@ -70,6 +73,13 @@
                 </td>
                 <td>
                     {{message[5].strftime("%d.%m.%Y %H:%M")}}
+                </td>
+                <td>
+                    {% if message[1] == session.id %}
+                    <form action="/deletemessage/{{message[6]}}" method="POST">
+                        <input type="submit" class="btn btn-primary" value="Delete">
+                    </form>
+                    {% endif %}
                 </td>
             </tr>
             {% endif %}

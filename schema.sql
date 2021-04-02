@@ -3,7 +3,7 @@ CREATE TABLE sales_ads (id SERIAL PRIMARY KEY,  author TEXT,  title TEXT, conten
   FOREIGN KEY(user_id) 
       REFERENCES users(id) 
         ON DELETE CASCADE);
-CREATE TABLE messages (ad_id INTEGER, user_id INTEGER, author_name TEXT, content TEXT, private BOOLEAN, created_at TIMESTAMP,
+CREATE TABLE messages (ad_id INTEGER, user_id INTEGER, author_name TEXT, content TEXT, private BOOLEAN, created_at TIMESTAMP, id SERIAL PRIMARY KEY, 
 CONSTRAINT fk_user
   FOREIGN KEY(user_id) 
       REFERENCES users(id) 
