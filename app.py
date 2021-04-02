@@ -18,6 +18,23 @@ def searchresult():
     sales_ads = result.fetchall()
     return render_template("searchresult.html", sales_ads=sales_ads)
 
+@app.route("/deleteaccount", methods=["GET", "POST"])
+def deleteaccount():
+    sql = "SELECT password from users WHERE id=:id"
+    result = db.session.execute(sql, {"id":session["id"]})
+    user = result.fetchone()
+    if check_password_hash(user["password"], request.form["passworddel"]):
+        sql = "DELETE FROM users WHERE id = :id"
+        db.session.execute(sql, {"id":session["id"]})
+        db.session.commit()
+        del session["id"]
+        del session["username"]
+        return notification("Account deleted")
+    else:
+        return notification("Wrong password")
+    
+    
+
 @app.route("/notification/<string:notification>")
 def notification(notification):
     return render_template("notification.html", notification=notification)

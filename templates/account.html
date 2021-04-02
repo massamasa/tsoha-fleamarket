@@ -30,7 +30,16 @@
     </div>
 
 </form>
-<h2>Delete account: to be implemented</h2>
+<h2>Delete account</h2>
+<form action="/deleteaccount" method="POST">
+    Enter current password:
+    <div class="form-group col-2">
+        <input type="password" class="form-control" id="inputPasswordDel" name="passworddel">
+    </div>
+    <div class="form-group col-2">
+        <input type="submit" class="btn btn-primary" value="Delete account">
+    </div>
+</form>
 {% else %}
 <h2>Contact: to be implemented</h2>
 {% endif %}
