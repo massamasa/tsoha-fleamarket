@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 @app.route("/searchresult", methods=["GET"])
 def searchresult():
     query = request.args["query"]
-    sql = "SELECT * FROM sales_ads WHERE title LIKE :query"
+    sql = "SELECT * FROM sales_ads WHERE title LIKE :query ORDER BY created_at DESC"
     result = db.session.execute(sql, {"query":"%"+query+"%"})
     sales_ads = result.fetchall()
     return render_template("searchresult.html", sales_ads=sales_ads)
@@ -33,6 +33,18 @@ def deleteaccount():
     else:
         return notification("Wrong password")
     
+@app.route("/deletead/<int:id>", methods=["GET", "POST"])
+def deletead(id):
+    sql = "SELECT user_id from sales_ads WHERE id = :id"
+    result = db.session.execute(sql, {"id":id})
+    user = result.fetchone()
+    if (session["id"]==user[0]):
+        sql = "DELETE FROM sales_ads WHERE id = :id"
+        db.session.execute(sql, {"id":id})
+        db.session.commit()
+        return notification("Ad deleted")
+    else:
+        return notification("Error: Not your ad")
     
 
 @app.route("/notification/<string:notification>")
@@ -123,7 +135,7 @@ def insertsalesad():
     
     return redirect("/")
 
-@app.route("/registerresult", methods=["POST"])
+@app.route("/registerresult", methods=["POST", "GET"])
 def registerresult():
     username = request.form["username"]
     password = request.form["password"]
