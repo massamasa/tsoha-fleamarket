@@ -115,10 +115,14 @@
         {% endif %}
     </div>
     <br>
+    {% if ad[7] == session.id %}
     <div class="form-group row">
         <form action="/deletead/{{ad[0]}}" method="POST">
             <input type="submit" class="btn btn-primary" value="Delete ad">
         </form>
     </div>
+    {% endif %}
 </div>
+
+
 {% endblock %}
