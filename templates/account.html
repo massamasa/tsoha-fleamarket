@@ -6,7 +6,7 @@
 <br>
 <form action="/changepassword" method="POST">
     <div class="form-group col-2">
-    <h3>Username: {{username}}</h3>
+    <h3>Username: {{user[1]}}</h3>
     <br>
     <h2>Change password</h2>
     </div>
@@ -41,6 +41,7 @@
     </div>
 </form>
 {% else %}
-<h2>Contact: to be implemented</h2>
+<h3>Username: {{ user[1] }}</h3>
+<h2>User's ads: to be implemented</h2>
 {% endif %}
 {% endblock %}

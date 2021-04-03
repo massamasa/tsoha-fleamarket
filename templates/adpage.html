@@ -20,9 +20,9 @@
                     <th scope="col">Ad posted</th>
                 </tr>
                 <tr>
-                    <th scope="col"><a href="/account/{{ad[7]}}"> {{ ad[1] }}</a></th>
-                    <th scope="col">{{ ad[4]/100 }}</th>
-                    <th scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</th>
+                    <td scope="col"><a href="/account/{{ad[7]}}"> {{ ad[1] }}</a></td>
+                    <td scope="col">{{ ad[4]/100 }}</td>
+                    <td scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</td>
 
                 </tr>
 
@@ -37,22 +37,22 @@
         {% if session.id %}
         <table class="table" style="width:100%">
             <tr>
-                <td>
+                <th>
                     Private / Public
-                </td>
+                </th>
 
-                <td>
+                <th>
                     Author
-                </td>
-                <td>
+                </th>
+                <th>
                     Message
-                </td>
-                <td>
+                </th>
+                <th>
                     Time posted
-                </td>
-                <td>
+                </th>
+                <th>
                     Delete?
-                </td>
+                </th>
             </tr>
             {% for message in messages %}
             {% if message[4] == false or (ad[7] == session.id or message[1] == session.id) %}
@@ -66,7 +66,7 @@
 
                 </td>
                 <td>
-                    <h4> {{message[2]}}</h4>
+                    <a href="/account/{{message[1]}}">{{message[2]}}</a>
                 </td>
                 <td>
                     {{message[3]}}

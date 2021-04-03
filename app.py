@@ -27,7 +27,7 @@ def deletemessage(id):
         sql = "DELETE FROM messages WHERE id = :message_id"
         db.session.execute(sql, {"message_id":id})
         db.session.commit()
-        return notification("Message deleted")
+        return notification("Success: Message deleted")
     else:
         return notification("Error: Not your message or ad")
 
@@ -44,9 +44,9 @@ def deleteaccount():
         db.session.commit()
         del session["id"]
         del session["username"]
-        return notification("Account deleted")
+        return notification("Success: Account deleted")
     else:
-        return notification("Wrong password")
+        return notification("Error: Wrong password")
     
 @app.route("/deletead/<int:id>", methods=["GET", "POST"])
 def deletead(id):
@@ -57,7 +57,7 @@ def deletead(id):
         sql = "DELETE FROM sales_ads WHERE id = :id"
         db.session.execute(sql, {"id":id})
         db.session.commit()
-        return notification("Ad deleted")
+        return notification("Success: Ad deleted")
     else:
         return notification("Error: Not your ad")
     
@@ -93,7 +93,7 @@ def account(id):
     sql = "SELECT * from users WHERE id=:id"
     result = db.session.execute(sql, {"id":id})
     user = result.fetchone()
-    return render_template("account.html", id=id, username=user["username"])
+    return render_template("account.html", id=id, user=user)
 
 @app.route("/changepassword", methods=["GET", "POST"])
 def changepassword():
@@ -175,7 +175,7 @@ def login():
     if user == None:
         return notification("Error: No user with that name")
     elif not check_password_hash(user["password"], password):
-        return notification("Wrong password")
+        return notification("Error: Wrong password")
     session["username"] = username
     session["id"] = user["id"]
     return redirect("/")
