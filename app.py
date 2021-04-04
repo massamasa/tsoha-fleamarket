@@ -178,7 +178,7 @@ def login():
         return notification("Error: Wrong password")
     session["username"] = username
     session["id"] = user["id"]
-    return redirect("/")
+    return notification("Success: Logged in")
 
 @app.route("/logout")
 def logout():

@@ -1,128 +1,128 @@
 {% extends "bootstrap/base.html" %}
 {{ super() }}
 {% block content %}
-<div class="container float-left">
-    <div class="row">
+
+<div class="row">
 
 
-        <div class="col-4">
-            <h2>{{ ad[2] }}</h2>
-            {{ ad[3] }}
+    <div class="col-4">
+        <h2>{{ ad[2] }}</h2>
+        {{ ad[3] }}
 
-        </div>
-        <div class="col-4">
-            <table class="table">
-                <tr>
-                    <th scope="col">
-                        Author</th>
-                    <th scope="col">Price</th>
-
-                    <th scope="col">Ad posted</th>
-                </tr>
-                <tr>
-                    <td scope="col"><a href="/account/{{ad[7]}}"> {{ ad[1] }}</a></td>
-                    <td scope="col">{{ ad[4]/100 }}</td>
-                    <td scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</td>
-
-                </tr>
-
-            </table>
-        </div>
     </div>
-
-    <div class="col-8">
-        <h2>
-            Messages
-        </h2>
-        {% if session.id %}
-        <table class="table" style="width:100%">
+    <div class="col-4">
+        <table class="table">
             <tr>
-                <th>
-                    Private / Public
-                </th>
+                <th scope="col">
+                    Author</th>
+                <th scope="col">Price</th>
 
-                <th>
-                    Author
-                </th>
-                <th>
-                    Message
-                </th>
-                <th>
-                    Time posted
-                </th>
-                <th>
-                    Delete?
-                </th>
+                <th scope="col">Ad posted</th>
             </tr>
-            {% for message in messages %}
-            {% if message[4] == false or (ad[7] == session.id or message[1] == session.id) %}
             <tr>
-                <td>
-                    {% if message[4] %}
-                    Private
-                    {% else %}
-                    Public
-                    {% endif %}
+                <td scope="col"><a href="/account/{{ad[7]}}"> {{ ad[1] }}</a></td>
+                <td scope="col">{{ ad[4]/100 }}</td>
+                <td scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</td>
 
-                </td>
-                <td>
-                    <a href="/account/{{message[1]}}">{{message[2]}}</a>
-                </td>
-                <td>
-                    {{message[3]}}
-                </td>
-                <td>
-                    {{message[5].strftime("%d.%m.%Y %H:%M")}}
-                </td>
-                <td>
-                    {% if message[1] == session.id %}
-                    <form action="/deletemessage/{{message[6]}}" method="POST">
-                        <input type="submit" class="btn btn-primary" value="Delete">
-                    </form>
-                    {% endif %}
-                </td>
             </tr>
-            {% endif %}
-            {% endfor %}
+
         </table>
     </div>
-    <div class="form-group row">
-        <form action="/postmessage/{{ad[0]}}" method="POST">
-            <h2>
-                Post a message
-            </h2>
-            <div class="form-group col-8">
-                <textarea name="content" rows="5" cols="75"></textarea>
-            </div>
-            <div class="form-check-inline col-2">
-                <input class="form-check-input" type="radio" name="privateRadio" id="privateRadio" value="1" checked>
-                <label class="form-check-label" for="privateRadio">
-                    Private
-                </label>
-            </div>
-            <div class="form-check-inline col-2">
-                <input class="form-check-input" type="radio" name="privateRadio" id="privateRadio2" value="2">
-                <label class="form-check-label" for="publicRadio">
-                    Public
-                </label>
-            </div>
-            <div class="form-group col-4">
-                <input type="submit" class="btn btn-primary" value="Post message">
-            </div>
-        </form>
-        {% else %}
-        Log in to view messages or post your own!
+</div>
+
+<div class="col-8">
+    <h2>
+        Messages
+    </h2>
+    {% if session.id %}
+    <table class="table" style="width:100%">
+        <tr>
+            <th>
+                Private / Public
+            </th>
+
+            <th>
+                Author
+            </th>
+            <th>
+                Message
+            </th>
+            <th>
+                Time posted
+            </th>
+            <th>
+                Delete?
+            </th>
+        </tr>
+        {% for message in messages %}
+        {% if message[4] == false or (ad[7] == session.id or message[1] == session.id) %}
+        <tr>
+            <td>
+                {% if message[4] %}
+                Private
+                {% else %}
+                Public
+                {% endif %}
+
+            </td>
+            <td>
+                <a href="/account/{{message[1]}}">{{message[2]}}</a>
+            </td>
+            <td>
+                {{message[3]}}
+            </td>
+            <td>
+                {{message[5].strftime("%d.%m.%Y %H:%M")}}
+            </td>
+            <td>
+                {% if message[1] == session.id %}
+                <form action="/deletemessage/{{message[6]}}" method="POST">
+                    <input type="submit" class="btn btn-primary" value="Delete">
+                </form>
+                {% endif %}
+            </td>
+        </tr>
         {% endif %}
-    </div>
-    <br>
-    {% if ad[7] == session.id %}
-    <div class="form-group row">
-        <form action="/deletead/{{ad[0]}}" method="POST">
-            <input type="submit" class="btn btn-primary" value="Delete ad">
-        </form>
-    </div>
+        {% endfor %}
+    </table>
+</div>
+<div class="form-group row">
+    <form action="/postmessage/{{ad[0]}}" method="POST">
+        <h2>
+            Post a message
+        </h2>
+        <div class="form-group col-8">
+            <textarea name="content" rows="5" cols="75"></textarea>
+        </div>
+        <div class="form-check-inline col-4">
+            <input class="form-check-input" type="radio" name="privateRadio" id="privateRadio" value="1" checked>
+            <label class="form-check-label" for="privateRadio">
+                Private
+            </label>
+        </div>
+        <div class="form-check-inline col-4">
+            <input class="form-check-input" type="radio" name="privateRadio" id="privateRadio2" value="2">
+            <label class="form-check-label" for="publicRadio">
+                Public
+            </label>
+        </div>
+        <div class="form-group col-4">
+            <input type="submit" class="btn btn-primary" value="Post message">
+        </div>
+    </form>
+    {% else %}
+    Log in to view messages or post your own!
     {% endif %}
 </div>
+<br>
+{% if ad[7] == session.id %}
+<div class="form-group row">
+    <form action="/deletead/{{ad[0]}}" method="POST">
+        <input type="submit" class="btn btn-primary" value="Delete ad">
+    </form>
+</div>
+{% endif %}
+
 
 
 {% endblock %}

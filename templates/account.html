@@ -5,27 +5,27 @@
 <h1>My account</h1>
 <br>
 <form action="/changepassword" method="POST">
-    <div class="form-group col-2">
+    <div class="form-group col-4">
     <h3>Username: {{user[1]}}</h3>
     <br>
     <h2>Change password</h2>
     </div>
     Enter current password:
-    <div class="form-group col-2">
+    <div class="form-group col-4">
         <input type="password" class="form-control" id="inputPassword" name="passwordold">
     </div>
 
     Enter new password:
-    <div class="form-group col-2">
+    <div class="form-group col-4">
         <input type="password" class="form-control" id="inputPasswordNew" name="passwordnew">
     </div>
 
     Re-enter new password:
-    <div class="form-group col-2">
+    <div class="form-group col-4">
         <input type="password" class="form-control" id="inputPasswordNewRe" name="passwordnewre">
     </div>
 
-    <div class="form-group col-2">
+    <div class="form-group col-4">
         <input type="submit" class="btn btn-primary" value="Change password">
     </div>
 
@@ -33,10 +33,10 @@
 <h2>Delete account</h2>
 <form action="/deleteaccount" method="POST">
     Enter current password:
-    <div class="form-group col-2">
+    <div class="form-group col-4">
         <input type="password" class="form-control" id="inputPasswordDel" name="passworddel">
     </div>
-    <div class="form-group col-2">
+    <div class="form-group col-4">
         <input type="submit" class="btn btn-primary" value="Delete account">
     </div>
 </form>
