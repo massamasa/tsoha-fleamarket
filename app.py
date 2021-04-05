@@ -110,7 +110,7 @@ def changepassword():
             return notification("Error: Passwords do not match")
     else:
         return notification("Error: Old password incorrect")
-    return myaccount("Success: Password changed")
+    return notification("Success: Password changed")
 
 @app.route("/postmessage/<int:ad_id>", methods=["POST"])
 def postmessage(ad_id):
