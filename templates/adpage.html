@@ -77,6 +77,7 @@
             <td>
                 {% if message[1] == session.id %}
                 <form action="/deletemessage/{{message[6]}}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <input type="submit" class="btn btn-primary" value="Delete">
                 </form>
                 {% endif %}
@@ -106,6 +107,7 @@
                 Public
             </label>
         </div>
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <div class="form-group col-4">
             <input type="submit" class="btn btn-primary" value="Post message">
         </div>

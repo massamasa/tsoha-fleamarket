@@ -1,7 +1,7 @@
 from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, request, session, abort
 from flask_sqlalchemy import SQLAlchemy
-from os import getenv
+from os import getenv, urandom
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime, timezone
 
@@ -20,6 +20,8 @@ def searchresult():
 
 @app.route("/deletemessage/<int:id>", methods=["GET", "POST"])
 def deletemessage(id):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     sql = "SELECT user_id from messages WHERE id = :message_id"
     result = db.session.execute(sql, {"message_id":id})
     user = result.fetchone()
@@ -35,6 +37,8 @@ def deletemessage(id):
 
 @app.route("/deleteaccount", methods=["GET", "POST"])
 def deleteaccount():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     sql = "SELECT password from users WHERE id = :id"
     result = db.session.execute(sql, {"id":session["id"]})
     user = result.fetchone()
@@ -50,6 +54,8 @@ def deleteaccount():
     
 @app.route("/deletead/<int:id>", methods=["GET", "POST"])
 def deletead(id):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     sql = "SELECT user_id from sales_ads WHERE id = :id"
     result = db.session.execute(sql, {"id":id})
     user = result.fetchone()
@@ -97,6 +103,8 @@ def account(id):
 
 @app.route("/changepassword", methods=["GET", "POST"])
 def changepassword():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     sql = "SELECT password from users WHERE id=:id"
     result = db.session.execute(sql, {"id":session["id"]})
     user = result.fetchone()
@@ -114,6 +122,8 @@ def changepassword():
 
 @app.route("/postmessage/<int:ad_id>", methods=["POST"])
 def postmessage(ad_id):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     private = request.form["privateRadio"]=="1"
     content = request.form["content"]
     if len(content.strip()) == 0:
@@ -136,6 +146,8 @@ def postsalesad():
 
 @app.route("/insertsalesad", methods=["POST"])
 def insertsalesad():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if len(request.form["title"].strip()) == 0:
         return notification("Error: Title cannot be empty")
     if len(request.form["price"].strip()) == 0:
@@ -182,11 +194,13 @@ def login():
         return notification("Error: Wrong password")
     session["username"] = username
     session["id"] = user["id"]
+    session["csrf_token"] = urandom(16).hex()
     return notification("Success: Logged in")
 
 @app.route("/logout")
 def logout():
     del session["username"]
     del session["id"]
+    del session["csrf_token"]
     return redirect("/")
 

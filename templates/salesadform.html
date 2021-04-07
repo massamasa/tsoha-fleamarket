@@ -18,6 +18,7 @@
         Description:
         <textarea name="content" rows="3" cols="35"></textarea>
     </div>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <div class="form-group col-4">
         <input type="submit" class="btn btn-primary" value="Post ad">
     </div>
