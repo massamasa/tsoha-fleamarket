@@ -1,0 +1,41 @@
+from db import db
+from datetime import datetime, timezone
+
+def insert_user(username, password):
+    sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
+    db.session.execute(sql, {"username":username, "password":password})
+    db.session.commit()
+
+def get_password(user_id):
+    sql = "SELECT password from users WHERE id = :id"
+    result = db.session.execute(sql, {"id":user_id})
+    user = result.fetchone()
+    return user[0]
+
+def check_username(username):
+    sql = "SELECT * from users WHERE username=:username"
+    result = db.session.execute(sql, {"username":username})
+    user = result.fetchone()
+    return user != None
+
+def set_password(user_id, newpasswordhash):
+    sql = "UPDATE users SET password =:newpassword WHERE id=:id"
+    db.session.execute(sql, {"newpassword":newpasswordhash, "id":user_id})
+    db.session.commit()
+
+def delete_user(user_id):
+    sql = "DELETE FROM users WHERE id = :id"
+    db.session.execute(sql, {"id":user_id})
+    db.session.commit()
+
+def get_user(user_id):
+    sql = "SELECT * from users WHERE id=:id"
+    result = db.session.execute(sql, {"id":user_id})
+    user = result.fetchone()
+    return user
+
+def get_user_by_username(username):
+    sql = "SELECT * from users WHERE username=:username"
+    result = db.session.execute(sql, {"username":username})
+    user = result.fetchone()
+    return user
