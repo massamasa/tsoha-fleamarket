@@ -116,7 +116,7 @@ def changepassword():
 def postmessage(ad_id):
     private = request.form["privateRadio"]=="1"
     content = request.form["content"]
-    if len(content) == 0:
+    if len(content.strip()) == 0:
         return notification("Error: A message must have content")
     dt = datetime.now(timezone.utc)
     sql = "INSERT INTO messages (ad_id, user_id, author_name, content, private, created_at) VALUES (:ad_id, :user_id, :author_name, :content, :private, :dt)"
@@ -136,9 +136,9 @@ def postsalesad():
 
 @app.route("/insertsalesad", methods=["POST"])
 def insertsalesad():
-    if len(request.form["title"]) == 0:
+    if len(request.form["title"].strip()) == 0:
         return notification("Error: Title cannot be empty")
-    if len(request.form["price"]) == 0:
+    if len(request.form["price"].strip()) == 0:
         return notification("Error: Price cannot be empty")   
     title = request.form["title"]
     content = request.form["content"]
@@ -154,6 +154,10 @@ def insertsalesad():
 def registerresult():
     username = request.form["username"]
     password = request.form["password"]
+    if len(username.strip())==0:
+        return notification("Error: Username cannot be empty")
+    if len(password) == 0:
+        return notification("Error: Password required")
     sql = "SELECT * from users WHERE username=:username"
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
