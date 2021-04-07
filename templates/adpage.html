@@ -120,6 +120,7 @@
 {% if ad[7] == session.id %}
 <div class="form-group row">
     <form action="/deletead/{{ad[0]}}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <input type="submit" class="btn btn-primary" value="Delete ad">
     </form>
 </div>
