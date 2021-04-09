@@ -79,8 +79,6 @@ def loginform():
 
 @app.route("/myaccount")
 def myaccount():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
     return account(session["id"])
 
 @app.route("/account/<int:id>", methods=["GET"])
