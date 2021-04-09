@@ -6,9 +6,9 @@
 <br>
 <form action="/changepassword" method="POST">
     <div class="form-group col-4">
-        <h3>Username: {{user[1]}}</h3>
-        <br>
-        <h2>Change password</h2>
+    <h3>Username: {{user[1]}}</h3>
+    <br>
+    <h2>Change password</h2>
     </div>
     Enter current password:
     <div class="form-group col-4">
@@ -25,7 +25,6 @@
         <input type="password" class="form-control" id="inputPasswordNewRe" name="passwordnewre">
     </div>
 
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <div class="form-group col-4">
         <input type="submit" class="btn btn-primary" value="Change password">
     </div>
@@ -37,14 +36,33 @@
     <div class="form-group col-4">
         <input type="password" class="form-control" id="inputPasswordDel" name="passworddel">
     </div>
-
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <div class="form-group col-4">
         <input type="submit" class="btn btn-primary" value="Delete account">
     </div>
 </form>
-{% else %}
+{% elif user[1] %}
 <h3>Username: {{ user[1] }}</h3>
 <h2>User's ads: to be implemented</h2>
+{% if session.admin %}
+<div class="row">
+<form action="/deleteaccountasadmin/{{id}}" method="POST">
+    <div class="form-group col-4">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="submit" class="btn btn-primary" value="Delete account">
+    </div>
+</form>
+{% if not user["admin"] %}
+<form action="/makeadmin/{{id}}" method="POST">
+    <div class="form-group col-4">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="submit" class="btn btn-primary" value="Make admin">
+    </div>
+</form>
 {% endif %}
+</div>
+{% endif %}
+    {% else %}
+    <h1>No user</h1>
+    {% endif %}
 {% endblock %}

@@ -15,12 +15,21 @@ def deletemessage(id):
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     user_id = messages.get_messages_user_id(id)
-    if user_id == session["id"]:
+    if user_id == session["id"] or session["admin"]:
         messages.delete_message(id)
         return notification("Success: Message deleted")
     else:
         return notification("Error: Not your message or ad")
 
+@app.route("/deleteaccountasadmin/<int:id>", methods=["POST"])
+def deleteaccountasadmin(id):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    if session["admin"]:
+        users.delete_user(id)
+        return notification("Success: User's Account deleted")
+    else:
+        return notification("Error: Not an admin")
 
 
 @app.route("/deleteaccount", methods=["GET", "POST"])
@@ -32,6 +41,8 @@ def deleteaccount():
         users.delete_user(session["id"])
         del session["id"]
         del session["username"]
+        del session["admin"]
+        del session["csrf_token"]
         return notification("Success: Account deleted")
     else:
         return notification("Error: Wrong password")
@@ -41,7 +52,7 @@ def deletead(id):
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     user_id = sales_ads.get_ads_user_id(id)
-    if (session["id"]==user_id):
+    if session["id"]==user_id or session["admin"]:
         sales_ads.delete_ad(id)
         return notification("Success: Ad deleted")
     else:
@@ -68,6 +79,8 @@ def loginform():
 
 @app.route("/myaccount")
 def myaccount():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     return account(session["id"])
 
 @app.route("/account/<int:id>", methods=["GET"])
@@ -88,6 +101,14 @@ def changepassword():
     else:
         return notification("Error: Old password incorrect")
     return notification("Success: Password changed")
+
+@app.route("/makeadmin/<int:id>", methods=["POST"])
+def makeadmin(id):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    if (session["admin"]):
+       users.make_admin(id)
+    return notification("Success: You made the user an admin")
 
 @app.route("/postmessage/<int:ad_id>", methods=["POST"])
 def postmessage(ad_id):
@@ -149,6 +170,7 @@ def login():
         return notification("Error: Wrong password")
     session["username"] = username
     session["id"] = user["id"]
+    session["admin"] = user["admin"]
     session["csrf_token"] = urandom(16).hex()
     return notification("Success: Logged in")
 
@@ -156,6 +178,7 @@ def login():
 def logout():
     del session["username"]
     del session["id"]
+    del session["admin"]
     del session["csrf_token"]
     return redirect("/")
 

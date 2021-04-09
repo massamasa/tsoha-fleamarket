@@ -75,7 +75,7 @@
                 {{message[5].strftime("%d.%m.%Y %H:%M")}}
             </td>
             <td>
-                {% if message[1] == session.id %}
+                {% if message[1] == session.id or session.admin %}
                 <form action="/deletemessage/{{message[6]}}" method="POST">
                     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <input type="submit" class="btn btn-primary" value="Delete">
@@ -117,7 +117,7 @@
     {% endif %}
 </div>
 <br>
-{% if ad[7] == session.id %}
+{% if ad[7] == session.id or session.admin %}
 <div class="form-group row">
     <form action="/deletead/{{ad[0]}}" method="POST">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
