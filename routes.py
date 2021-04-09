@@ -84,7 +84,8 @@ def myaccount():
 @app.route("/account/<int:id>", methods=["GET"])
 def account(id):
     user = users.get_user(id)
-    return render_template("account.html", id=id, user=user)
+    ads = sales_ads.list_users_ads(id)
+    return render_template("account.html", id=id, user=user, ads=ads)
 
 @app.route("/changepassword", methods=["GET", "POST"])
 def changepassword():

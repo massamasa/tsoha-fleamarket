@@ -7,6 +7,12 @@ def search(query):
     sales_ads = result.fetchall()
     return sales_ads
 
+def list_users_ads(id):
+    sql = "SELECT * FROM sales_ads WHERE user_id = :id ORDER BY created_at DESC"
+    result = db.session.execute(sql, {"id":id})
+    sales_ads = result.fetchall()
+    return sales_ads
+
 def get_ads_user_id(id):
     sql = "SELECT user_id from sales_ads WHERE id = :id"
     result = db.session.execute(sql, {"id":id})
