@@ -14,8 +14,8 @@
         {% for ad in sales_ads %}
         <tr>
             <th scope="col"><a href="/account/{{ad[7]}}">{{ ad[1] }}</a></th>
-            <th scope="col"><a href="/adpage/{{ad[0]}}">{{ ad[2] }}</a></th>
-            <th scope="col">{{ ad[3] }}</th>
+            <th scope="col"><a href="/adpage/{{ad[0]}}">{{ ad[2][:40] }}</a></th>
+            <th scope="col">{{ ad[3][:80] }}</th>
             <th scope="col">{{ ad[4]/100 }}€</th>
             <th scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</th>
         </tr>
