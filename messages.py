@@ -10,9 +10,10 @@ def get_messages_user_id(id):
     return user[0]
 
 def delete_message(id):
-    sql = "DELETE FROM messages WHERE id = :message_id"
-    db.session.execute(sql, {"message_id":id})
+    sql = "DELETE FROM messages WHERE id = :message_id RETURNING ad_id"
+    adWithId = db.session.execute(sql, {"message_id":id})
     db.session.commit()
+    return adWithId.fetchone()[0]
 
 def get_all_ads_messages(id):
     sql = "SELECT * FROM messages WHERE (ad_id = :id) ORDER BY created_at DESC"

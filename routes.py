@@ -18,8 +18,8 @@ def deletemessage(id):
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     if user_id == session["id"] or session["admin"]:
-        messages.delete_message(id)
-        return notification("Success: Message deleted")
+        ad_id = messages.delete_message(id)
+        return redirect("/adpage/"+str(ad_id))
     else:
         return notification("Error: Not your message or ad")
 
