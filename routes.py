@@ -76,8 +76,9 @@ def adpage(id):
 
 @app.route("/")
 def index():
-    if users.get_user(session["id"]) == None:
-        purgeSession()
+    if len(session) != 0:
+        if users.get_user(session["id"]) == None:
+            purgeSession()
     return render_template("index.html")
 
 @app.route("/loginform")
