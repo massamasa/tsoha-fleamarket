@@ -5,6 +5,8 @@ def get_messages_user_id(id):
     sql = "SELECT user_id from messages WHERE id = :message_id"
     result = db.session.execute(sql, {"message_id":id})
     user = result.fetchone()
+    if (user == None):
+        return None
     return user[0]
 
 def delete_message(id):

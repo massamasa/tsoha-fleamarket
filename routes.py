@@ -12,17 +12,21 @@ def searchresult():
 
 @app.route("/deletemessage/<int:id>", methods=["GET", "POST"])
 def deletemessage(id):
+    user_id = messages.get_messages_user_id(id)
+    if user_id == None:
+        return notification("Error: No message to delete")
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
-    user_id = messages.get_messages_user_id(id)
     if user_id == session["id"] or session["admin"]:
         messages.delete_message(id)
         return notification("Success: Message deleted")
     else:
         return notification("Error: Not your message or ad")
 
-@app.route("/deleteaccountasadmin/<int:id>", methods=["POST"])
+@app.route("/deleteaccountasadmin/<int:id>", methods=["GET", "POST"])
 def deleteaccountasadmin(id):
+    if users.get_user(id) == None:
+        return notification("Error: No user")
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     if session["admin"]:
@@ -39,16 +43,15 @@ def deleteaccount():
     password = users.get_password(session["id"])
     if check_password_hash(password, request.form["passworddel"]):
         users.delete_user(session["id"])
-        del session["id"]
-        del session["username"]
-        del session["admin"]
-        del session["csrf_token"]
+        purgeSession()
         return notification("Success: Account deleted")
     else:
         return notification("Error: Wrong password")
     
 @app.route("/deletead/<int:id>", methods=["GET", "POST"])
 def deletead(id):
+    if sales_ads.get_ad(id) == None:
+        return notification("Error: No ad")
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     user_id = sales_ads.get_ads_user_id(id)
@@ -66,11 +69,15 @@ def notification(notification):
 @app.route("/adpage/<int:id>", methods=["GET"])
 def adpage(id):
     ad = sales_ads.get_ad(id)
+    if ad == None:
+        return notification("Error: No ad")
     ads_messages = messages.get_all_ads_messages(ad["id"])
     return render_template("adpage.html", ad=ad, messages=ads_messages)
 
 @app.route("/")
 def index():
+    if users.get_user(session["id"]) == None:
+        purgeSession()
     return render_template("index.html")
 
 @app.route("/loginform")
@@ -79,11 +86,15 @@ def loginform():
 
 @app.route("/myaccount")
 def myaccount():
+    if len(session) == 0:
+        return notification("Error: You are not logged in.")
     return account(session["id"])
 
 @app.route("/account/<int:id>", methods=["GET"])
 def account(id):
     user = users.get_user(id)
+    if (user == None):
+        return notification("Error: No user")
     ads = sales_ads.list_users_ads(id)
     return render_template("account.html", id=id, user=user, ads=ads)
 
@@ -105,12 +116,14 @@ def changepassword():
 def makeadmin(id):
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
-    if (session["admin"]):
+    if session["admin"]:
        users.make_admin(id)
     return notification("Success: You made the user an admin")
 
-@app.route("/postmessage/<int:ad_id>", methods=["POST"])
+@app.route("/postmessage/<int:ad_id>", methods=["GET", "POST"])
 def postmessage(ad_id):
+    if sales_ads.get_ad(ad_id) == None:
+        return notification("Error: No ad")
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     private = request.form["privateRadio"]=="1"
@@ -175,9 +188,11 @@ def login():
 
 @app.route("/logout")
 def logout():
+    purgeSession()
+    return redirect("/")
+
+def purgeSession():
     del session["username"]
     del session["id"]
     del session["admin"]
     del session["csrf_token"]
-    return redirect("/")
-
