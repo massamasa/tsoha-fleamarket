@@ -95,6 +95,8 @@ def myaccount():
 def account(id):
     user = users.get_user(id)
     if (user == None):
+        if users.get_user(session["id"]) == None:
+            purgeSession()
         return notification("Error: No user")
     ads = sales_ads.list_users_ads(id)
     return render_template("account.html", id=id, user=user, ads=ads)
@@ -155,8 +157,8 @@ def insertsalesad():
     title = request.form["title"]
     content = request.form["content"]
     price_in_cents = int(float(request.form["price"])*100)
-    sales_ads.insert_ad(session["username"], title, content, price_in_cents, session["id"])
-    return redirect("/")
+    id = sales_ads.insert_ad(session["username"], title, content, price_in_cents, session["id"])
+    return redirect("/adpage/"+str(id))
 
 @app.route("/registerresult", methods=["POST", "GET"])
 def registerresult():
@@ -170,7 +172,7 @@ def registerresult():
         return notification("Error: User name already taken.")
     hash_value = generate_password_hash(password)
     users.insert_user(username, hash_value)
-    return notification("Success: New account registered.")
+    return notification("Success: New account registered. Please log in.")
 
 @app.route("/loginresult", methods=["POST"])
 def login():

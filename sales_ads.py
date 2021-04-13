@@ -32,6 +32,7 @@ def get_ad(id):
 
 def insert_ad(author, title, content, price_in_cents, user_id):
     dt = datetime.now(timezone.utc)
-    sql = "INSERT INTO sales_ads (author, title, content, price_in_cents, user_id, created_at, last_modified) VALUES (:author, :title, :content, :price_in_cents, :user_id, :dt, :dt)"
-    db.session.execute(sql, {"author":author, "title":title, "content":content, "price_in_cents":price_in_cents, "user_id":user_id, "dt":dt})
+    sql = "INSERT INTO sales_ads (author, title, content, price_in_cents, user_id, created_at, last_modified) VALUES (:author, :title, :content, :price_in_cents, :user_id, :dt, :dt) RETURNING id"
+    ad = db.session.execute(sql, {"author":author, "title":title, "content":content, "price_in_cents":price_in_cents, "user_id":user_id, "dt":dt})
     db.session.commit()
+    return ad.fetchone()[0]
