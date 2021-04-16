@@ -1,0 +1,30 @@
+{% extends "bootstrap/base.html" %}
+{{ super() }}
+{% block content %}
+<h1>Advanced search</h1>
+<form action="/advancedsearchresult" method="GET">
+    <div class="form-group col-4">
+        <label for="inputAuthor">Author</label>
+        <input type="text" class="form-control" id="inputAuthor" name="author">
+    </div>
+    <div class="form-group col-4">
+        <label for="inputTitle">Title</label>
+        <input type="text" class="form-control" id="inputTitle" name="title">
+    </div>
+    <div class="form-group col-4">
+        <label for="inputContent">Content</label>
+        <input type="text" class="form-control" id="inputContent" name="content">
+    </div>
+    <div class="form-group col-4">
+        <label for="inputLowestprice">Lowest price</label>
+        <input type="number" class="form-control" id="inputLowestPrice" name="lowestprice">
+    </div>
+    <div class="form-group col-4">
+        <label for="inputHighestPrice">Highest price</label>
+        <input type="number" class="form-control" id="inputHighestPrice" name="highestprice">
+    </div>
+    <div class="form-group col-4">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+{% endblock %}

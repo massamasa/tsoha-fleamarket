@@ -10,6 +10,24 @@ def searchresult():
     sales_ads_list = sales_ads.search(query)
     return render_template("searchresult.html", sales_ads=sales_ads_list)
 
+@app.route("/advancedsearchresult", methods=["GET"])
+def advancedsearchresult():
+    author = request.args["author"]
+    title = request.args["title"]
+    content = request.args["content"]
+    lowestprice = -99999999
+    if len(request.args["lowestprice"]) >0:
+        lowestprice = int(request.args["lowestprice"])*100
+    highestprice= 99999999
+    if len(request.args["highestprice"]) >0:
+        highestprice = int(request.args["highestprice"])*100
+    sales_ads_list = sales_ads.advancedsearch(author, title, content, highestprice, lowestprice)
+    return render_template("searchresult.html", sales_ads=sales_ads_list)
+
+@app.route("/advancedsearchform")
+def advancedsearchform():
+    return render_template("advancedsearchform.html")
+
 @app.route("/deletemessage/<int:id>", methods=["GET", "POST"])
 def deletemessage(id):
     user_id = messages.get_messages_user_id(id)
