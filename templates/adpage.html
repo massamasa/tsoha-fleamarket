@@ -26,6 +26,12 @@
             </tr>
 
         </table>
+        {% if ad[7] == session.id or session.admin %}
+        <div class="col-2"></div>
+        <form action="/editsalesadform/{{ad[0]}}" method="GET">
+            <input type="submit" class="btn btn-primary col-4" value="Edit ad">
+        </form>
+        {% endif %}
     </div>
 </div>
 
@@ -94,22 +100,22 @@
         <div class="form-group col-8">
             <textarea name="content" rows="5" cols="75"></textarea>
         </div>
-        <div class="form-check-inline col-4">
+        <div class="form-check-inline col-2">
             <input class="form-check-input" type="radio" name="privateRadio" id="privateRadio" value="1" checked>
             <label class="form-check-label" for="privateRadio">
                 Private
             </label>
         </div>
-        <div class="form-check-inline col-4">
+        <div class="form-check-inline col-2">
             <input class="form-check-input" type="radio" name="privateRadio" id="privateRadio2" value="2">
             <label class="form-check-label" for="publicRadio">
                 Public
             </label>
         </div>
+        <div class="form-check-inline col-5"></div>
+        <input type="submit" class="btn btn-primary col-2" value="Post message">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-        <div class="form-group col-4">
-            <input type="submit" class="btn btn-primary" value="Post message">
-        </div>
+
     </form>
     {% else %}
     Log in to view messages or post your own!
@@ -117,14 +123,10 @@
 </div>
 <br>
 {% if ad[7] == session.id or session.admin %}
-<div class="form-group row">
+<div>
     <form action="/deletead/{{ad[0]}}" method="POST">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-        <input type="submit" class="btn btn-primary" value="Delete ad">
-    </form>
-    
-    <form action="/editsalesadform/{{ad[0]}}" method="GET">
-        <input type="submit" class="btn btn-primary" value="Edit ad">
+        <input type="submit" class="btn btn-primary col-2" value="Delete ad">
     </form>
 </div>
 {% endif %}
