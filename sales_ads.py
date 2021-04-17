@@ -2,7 +2,7 @@ from db import db
 from datetime import datetime, timezone
 
 def search(query):
-    sql = "SELECT * FROM sales_ads WHERE title LIKE :query ORDER BY created_at DESC"
+    sql = "SELECT * FROM sales_ads WHERE title LIKE :query ORDER BY last_modified DESC"
     result = db.session.execute(sql, {"query":"%"+query+"%"})
     sales_ads = result.fetchall()
     return sales_ads
@@ -14,7 +14,7 @@ def advancedsearch(author, title, content, highestprice, lowestprice):
     return sales_ads
 
 def list_users_ads(id):
-    sql = "SELECT * FROM sales_ads WHERE user_id = :id ORDER BY created_at DESC"
+    sql = "SELECT * FROM sales_ads WHERE user_id = :id ORDER BY last_modified DESC"
     result = db.session.execute(sql, {"id":id})
     sales_ads = result.fetchall()
     return sales_ads
@@ -43,3 +43,9 @@ def insert_ad(author, title, content, price_in_cents, user_id):
     ad = db.session.execute(sql, {"author":author, "title":title, "content":content, "price_in_cents":price_in_cents, "user_id":user_id, "dt":dt})
     db.session.commit()
     return ad.fetchone()[0]
+
+def update_ad(id, title, content, price_in_cents):
+    dt = datetime.now(timezone.utc)
+    sql = "UPDATE sales_ads SET title = :title, content = :content, price_in_cents = :price_in_cents, last_modified = :dt WHERE id = :id"
+    ad = db.session.execute(sql, {"title":title, "content":content, "price_in_cents":price_in_cents, "dt":dt, "id":id})
+    db.session.commit()

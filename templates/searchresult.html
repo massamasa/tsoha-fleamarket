@@ -10,6 +10,7 @@
             <th scope="col">Description</th>
             <th scope="col">Price</th>
             <th scope="col">Time posted</th>
+            <th scope="col">Last updated</th>
         </tr>
         {% for ad in sales_ads %}
         <tr>
@@ -18,6 +19,7 @@
             <th scope="col">{{ ad[3][:80] }}</th>
             <th scope="col">{{ ad[4]/100 }}€</th>
             <th scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</th>
+            <td scope="col">{{ ad[6].strftime("%d.%m.%Y %H:%M") }}</td>
         </tr>
         {% endfor %}
     </table>

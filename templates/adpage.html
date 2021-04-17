@@ -1,7 +1,6 @@
 {% extends "bootstrap/base.html" %}
 {{ super() }}
 {% block content %}
-
 <div class="row">
 
 
@@ -17,11 +16,13 @@
                     Author</th>
                 <th scope="col">Price</th>
                 <th scope="col">Ad posted</th>
+                <th scope="col">Last updated</th>
             </tr>
             <tr>
                 <td scope="col"><a href="/account/{{ad[7]}}"> {{ ad[1] }}</a></td>
                 <td scope="col">{{ ad[4]/100 }}€</td>
                 <td scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</td>
+                <td scope="col">{{ ad[6].strftime("%d.%m.%Y %H:%M") }}</td>
             </tr>
 
         </table>
@@ -120,6 +121,10 @@
     <form action="/deletead/{{ad[0]}}" method="POST">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <input type="submit" class="btn btn-primary" value="Delete ad">
+    </form>
+    
+    <form action="/editsalesadform/{{ad[0]}}" method="GET">
+        <input type="submit" class="btn btn-primary" value="Edit ad">
     </form>
 </div>
 {% endif %}

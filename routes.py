@@ -24,6 +24,29 @@ def advancedsearchresult():
     sales_ads_list = sales_ads.advancedsearch(author, title, content, highestprice, lowestprice)
     return render_template("searchresult.html", sales_ads=sales_ads_list)
 
+@app.route("/editsalesadform/<int:id>", methods=["GET"])
+def editsalesadform(id):
+    if session["id"] != sales_ads.get_ads_user_id(id) and not session["admin"]:
+        return notification("Error: This is not your ad to edit")
+    ad = sales_ads.get_ad(id)
+    return render_template("editsalesadform.html", ad=ad)
+
+@app.route("/updatesalesad/<int:id>", methods=["POST"])
+def updatesalesad(id):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    if session["id"] != sales_ads.get_ads_user_id(id) and not session["admin"]:
+        return notification("Error: This is not your ad to edit")
+    if len(request.form["title"].strip()) == 0:
+        return notification("Error: Title cannot be empty")
+    if len(request.form["price"].strip()) == 0:
+        return notification("Error: Price cannot be empty")   
+    title = request.form["title"]
+    content = request.form["content"]
+    price_in_cents = int(float(request.form["price"])*100)
+    sales_ads.update_ad(id, title, content, price_in_cents)
+    return redirect("/adpage/"+str(id))
+
 @app.route("/advancedsearchform")
 def advancedsearchform():
     return render_template("advancedsearchform.html")
