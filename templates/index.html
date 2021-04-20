@@ -12,6 +12,9 @@
 
 </li>
 {% endif %}
-
+Popular tags:
+{% for tag in tag_list%}
+    <a href="/tags/{{tag[1]}}"> {{tag[0]}}</a> ({{tag[2]}}), 
+{% endfor%}
 </div>
 {% endblock %}

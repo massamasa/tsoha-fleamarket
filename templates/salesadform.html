@@ -6,17 +6,21 @@
 <form action="/insertsalesad" method="POST">
 
     <div class="form-group col-4">
-        Title:
+        Title
         <input type="text" class="form-control" id="inputTitle" name="title">
     </div>
 
     <div class="form-group col-4">
-        Price:
+        Price
         <input type="number" class="form-control" id="inputPrice" name="price">
     </div>
     <div class="form-group col-4">
-        Description:
+        Description
         <textarea name="content" rows="3" cols="35"></textarea>
+    </div>
+    <div class="form-group col-4">
+        Tags separated by empty spaces <br> Example: <i>helsinki dishwasher delivery</i>
+        <textarea name="tags" rows="2" cols="35"></textarea>
     </div>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <div class="form-group col-4">

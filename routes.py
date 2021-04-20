@@ -2,7 +2,7 @@ from app import app
 from os import getenv, urandom
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import redirect, render_template, request, session, abort
-import messages, sales_ads, users
+import messages, sales_ads, users, tags
 
 @app.route("/searchresult", methods=["GET"])
 def searchresult():
@@ -120,7 +120,8 @@ def index():
     if len(session) != 0:
         if users.get_user(session["id"]) == None:
             purgeSession()
-    return render_template("index.html")
+    tag_list = tags.get_all_tags_with_count()
+    return render_template("index.html", tag_list=tag_list)
 
 @app.route("/loginform")
 def loginform():
@@ -187,7 +188,7 @@ def registerform():
 def postsalesad():
     return render_template("salesadform.html")
 
-@app.route("/insertsalesad", methods=["POST"])
+@app.route("/insertsalesad", methods=["POST", "GET"])
 def insertsalesad():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
@@ -197,8 +198,10 @@ def insertsalesad():
         return notification("Error: Price cannot be empty")   
     title = request.form["title"]
     content = request.form["content"]
+    tagsString = request.form["tags"]
     price_in_cents = int(float(request.form["price"])*100)
     id = sales_ads.insert_ad(session["username"], title, content, price_in_cents, session["id"])
+    tags.insert_tags(tagsString, id)
     return redirect("/adpage/"+str(id))
 
 @app.route("/registerresult", methods=["POST", "GET"])
