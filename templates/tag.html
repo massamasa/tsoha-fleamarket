@@ -1,0 +1,15 @@
+{% extends "bootstrap/base.html" %}
+{{ super() }}
+{% block content %}
+<h1>Ads for tag: {{tag[1]}}</h1>
+{% for ad in ads %}
+<table class="table col-4" style="width:100%">
+    <tr>
+        <th scope="col"><a href="/adpage/{{ad[0]}}">{{ ad[2][:40] }}</a></th>
+        <th scope="col">{{ ad[3][:80] }}</th>
+        <th scope="col">{{ ad[4]/100 }}€</th>
+        <th scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</th>
+    </tr>
+</table>
+{% endfor %}
+{% endblock %}

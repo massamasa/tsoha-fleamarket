@@ -107,13 +107,18 @@ def deletead(id):
 def notification(notification):
     return render_template("notification.html", notification=notification)
 
+@app.route("/tag/<int:id>", methods=["GET"])
+def tag(id):
+    return render_template("tag.html", tag = tags.get_tag(id), ads=tags.get_tags_ads(id))
+
 @app.route("/adpage/<int:id>", methods=["GET"])
 def adpage(id):
     ad = sales_ads.get_ad(id)
     if ad == None:
         return notification("Error: No ad")
     ads_messages = messages.get_all_ads_messages(ad["id"])
-    return render_template("adpage.html", ad=ad, messages=ads_messages)
+    ads_tags = tags.get_ads_tags(id)
+    return render_template("adpage.html", ad=ad, messages=ads_messages, tags=ads_tags)
 
 @app.route("/")
 def index():

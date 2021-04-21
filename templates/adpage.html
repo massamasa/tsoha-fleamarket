@@ -26,6 +26,11 @@
             </tr>
 
         </table>
+        <div><b>Tags:</b>
+             {% for tag in tags%}{{tag[1]}} {% endfor %}
+
+        </div>
+        <br>
         {% if ad[7] == session.id or session.admin %}
         <div class="col-2"></div>
         <form action="/editsalesadform/{{ad[0]}}" method="GET">
