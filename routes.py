@@ -29,7 +29,8 @@ def editsalesadform(id):
     if session["id"] != sales_ads.get_ads_user_id(id) and not session["admin"]:
         return notification("Error: This is not your ad to edit")
     ad = sales_ads.get_ad(id)
-    return render_template("editsalesadform.html", ad=ad)
+    ads_tags = tags.get_ads_tags(id)
+    return render_template("editsalesadform.html", ad=ad, tags=ads_tags)
 
 @app.route("/updatesalesad/<int:id>", methods=["POST"])
 def updatesalesad(id):
@@ -40,11 +41,13 @@ def updatesalesad(id):
     if len(request.form["title"].strip()) == 0:
         return notification("Error: Title cannot be empty")
     if len(request.form["price"].strip()) == 0:
-        return notification("Error: Price cannot be empty")   
+        return notification("Error: Price cannot be empty")
     title = request.form["title"]
     content = request.form["content"]
+    tagsString = request.form["tags"]
     price_in_cents = int(float(request.form["price"])*100)
     sales_ads.update_ad(id, title, content, price_in_cents)
+    tags.update_tags(tagsString, id)
     return redirect("/adpage/"+str(id))
 
 @app.route("/advancedsearchform")
