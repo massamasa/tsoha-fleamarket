@@ -16,7 +16,7 @@ A web app for selling items from person to person. Each user is an admin or regu
 - An admin can grant another user admin priviliges.
 
 ## Current state of the app
-Most of the basic user and admin functions of the app have been made: registration, logging in, sales ads, messages and basic search. The appearance is under construction. An advanced search function may be added later.
+All of the basic user functions have been implemented. Aside from possible appearance changes, the app is ready.
 
 ## Heroku testing
 The app can be found on Heroku at https://tsoha-fleamarket.herokuapp.com
