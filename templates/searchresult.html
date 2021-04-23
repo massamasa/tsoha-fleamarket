@@ -14,11 +14,11 @@
         </tr>
         {% for ad in sales_ads %}
         <tr>
-            <th scope="col"><a href="/account/{{ad[7]}}">{{ ad[1] }}</a></th>
-            <th scope="col"><a href="/adpage/{{ad[0]}}">{{ ad[2][:40] }}</a></th>
-            <th scope="col">{{ ad[3][:80] }}</th>
-            <th scope="col">{{ ad[4]/100 }}€</th>
-            <th scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</th>
+            <td scope="col"><a href="/account/{{ad[7]}}">{{ ad[1] }}</a></td>
+            <td scope="col"><a href="/adpage/{{ad[0]}}">{{ ad[2][:40] }}</a></td>
+            <td scope="col">{{ ad[3][:80] }}</td>
+            <td scope="col">{{ ad[4]/100 }}€</td>
+            <td scope="col">{{ ad[5].strftime("%d.%m.%Y %H:%M") }}</td>
             <td scope="col">{{ ad[6].strftime("%d.%m.%Y %H:%M") }}</td>
         </tr>
         {% endfor %}
