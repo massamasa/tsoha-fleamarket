@@ -112,7 +112,10 @@ def notification(notification):
 
 @app.route("/tag/<int:id>", methods=["GET"])
 def tag(id):
-    return render_template("tag.html", tag = tags.get_tag(id), ads=tags.get_tags_ads(id))
+    tag = tags.get_tag(id)
+    if (not tag):
+        return notification("Error: No such tag")
+    return render_template("tag.html", tag = tag, ads=tags.get_tags_ads(id))
 
 @app.route("/adpage/<int:id>", methods=["GET"])
 def adpage(id):

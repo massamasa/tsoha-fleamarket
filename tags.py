@@ -44,7 +44,10 @@ def get_all_tags_with_count():
     return result.fetchall()
 
 def get_tags_ads(id):
-    sql = "SELECT sales_ads.* FROM sales_ads INNER JOIN ads_tags ON ads_tags.ad_id = sales_ads.id INNER JOIN tags ON ads_tags.tag_id = :id GROUP BY sales_ads.id ORDER BY sales_ads.last_modified DESC"
+    sql = "SELECT sales_ads.* FROM sales_ads \
+        INNER JOIN ads_tags ON ads_tags.ad_id = sales_ads.id \
+            INNER JOIN tags ON ads_tags.tag_id = :id \
+                GROUP BY sales_ads.id ORDER BY sales_ads.last_modified DESC"
 
     result = db.session.execute(sql, {"id":id})
     return result.fetchall()
@@ -55,6 +58,9 @@ def get_tag(id):
     return result.fetchone()
 
 def get_ads_tags(id):
-    sql = "SELECT tags.* FROM tags INNER JOIN ads_tags ON ads_tags.tag_id = tags.id INNER JOIN sales_ads ON ads_tags.ad_id = :id GROUP BY tags.id ORDER BY tags.tag_name"
+    sql = "SELECT tags.* FROM tags \
+        INNER JOIN ads_tags ON ads_tags.tag_id = tags.id \
+            INNER JOIN sales_ads ON ads_tags.ad_id = :id \
+                GROUP BY tags.id ORDER BY tags.tag_name"
     result = db.session.execute(sql, {"id":id})
     return result.fetchall()

@@ -8,8 +8,13 @@ def search(query):
     return sales_ads
 
 def advancedsearch(author, title, content, highestprice, lowestprice):
-    sql = "SELECT * FROM sales_ads WHERE (author LIKE :author) AND (title LIKE :title) AND (content LIKE :content) AND (price_in_cents <= :highestprice) AND (price_in_cents >= :lowestprice) ORDER BY created_at DESC"
-    result = db.session.execute(sql, {"author":"%"+author+"%","title":"%"+title+"%", "content":"%"+content+"%", "highestprice":highestprice, "lowestprice":lowestprice})
+    sql = "SELECT * FROM sales_ads WHERE (author LIKE :author) \
+        AND (title LIKE :title) AND (content LIKE :content) \
+            AND (price_in_cents <= :highestprice) AND (price_in_cents >= :lowestprice) \
+                ORDER BY created_at DESC"
+    result = db.session.execute(sql, \
+        {"author":"%"+author+"%","title":"%"+title+"%", "content":"%"+content+"%", \
+            "highestprice":highestprice, "lowestprice":lowestprice})
     sales_ads = result.fetchall()
     return sales_ads
 
@@ -38,14 +43,19 @@ def get_ad(id):
 
 def insert_ad(author, title, content, price_in_cents, user_id):
     dt = datetime.now(timezone.utc)
-    sql = "INSERT INTO sales_ads (author, title, content, price_in_cents, user_id, created_at, last_modified) \
-        VALUES (:author, :title, :content, :price_in_cents, :user_id, :dt, :dt) RETURNING id"
-    ad = db.session.execute(sql, {"author":author, "title":title, "content":content, "price_in_cents":price_in_cents, "user_id":user_id, "dt":dt})
+    sql = "INSERT INTO sales_ads \
+        (author, title, content, price_in_cents, user_id, created_at, last_modified) \
+            VALUES (:author, :title, :content, :price_in_cents, :user_id, :dt, :dt) RETURNING id"
+    ad = db.session.execute(sql, \
+        {"author":author, "title":title, "content":content, \
+            "price_in_cents":price_in_cents, "user_id":user_id, "dt":dt})
     db.session.commit()
     return ad.fetchone()[0]
 
 def update_ad(id, title, content, price_in_cents):
     dt = datetime.now(timezone.utc)
-    sql = "UPDATE sales_ads SET title = :title, content = :content, price_in_cents = :price_in_cents, last_modified = :dt WHERE id = :id"
-    ad = db.session.execute(sql, {"title":title, "content":content, "price_in_cents":price_in_cents, "dt":dt, "id":id})
+    sql = "UPDATE sales_ads SET title = :title, content = :content, \
+        price_in_cents = :price_in_cents, last_modified = :dt WHERE id = :id"
+    ad = db.session.execute(sql, \
+        {"title":title, "content":content, "price_in_cents":price_in_cents, "dt":dt, "id":id})
     db.session.commit()

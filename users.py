@@ -3,7 +3,8 @@ from datetime import datetime, timezone
 
 def insert_user(username, password):
     dt = datetime.now(timezone.utc)
-    sql = "INSERT INTO users (username, password, joined_at, admin) VALUES (:username, :password, :dt, false)"
+    sql = "INSERT INTO users (username, password, joined_at, admin) \
+        VALUES (:username, :password, :dt, false)"
     db.session.execute(sql, {"username":username, "password":password, "dt":dt})
     db.session.commit()
 

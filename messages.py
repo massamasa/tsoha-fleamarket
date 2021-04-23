@@ -25,5 +25,7 @@ def insert_message(ad_id, private, content, user_id, username):
     dt = datetime.now(timezone.utc)
     sql = "INSERT INTO messages (ad_id, user_id, author_name, content, private, created_at) \
         VALUES (:ad_id, :user_id, :author_name, :content, :private, :dt)"
-    db.session.execute(sql, {"ad_id":ad_id, "user_id":user_id, "author_name":username, "content":content, "private":private, "dt":dt})
+    db.session.execute(sql, \
+        {"ad_id":ad_id, "user_id":user_id, "author_name":username, \
+            "content":content, "private":private, "dt":dt})
     db.session.commit()

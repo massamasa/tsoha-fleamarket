@@ -2,18 +2,17 @@
 {{ super() }}
 {% block content %}
 
-
-{% if session.username %}
-<h1>Welcome to Flea Market, {{ session.username }}!</h1>
-{% else %}
-<h1>Welcome to Flea Market!<br>
-    Please <a href="/loginform">log in</a> or <a href="/registerform">register a new account</a>.</h1>
-
-
-</li>
-{% endif %}
 <div class="col-8">
-<h2>Tags</h2>
+    {% if session.username %}
+    <h1>Welcome to Flea Market, {{ session.username }}!</h1>
+    {% else %}
+    <h1>Welcome to Flea Market!<br>
+        Please <a href="/loginform">log in</a> or <a href="/registerform">register a new account</a>.</h1>
+    {% endif %}
+</div>
+<br>
+<div class="col-8">
+    <h2>Top tags</h2>
     {% for tag in tag_list%}
     <a href="/tag/{{tag[1]}}"> {{tag[0]}}</a> ({{tag[2]}}),
     {% endfor%}
