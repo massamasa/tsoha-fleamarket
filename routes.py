@@ -32,7 +32,7 @@ def editsalesadform(id):
     ads_tags = tags.get_ads_tags(id)
     return render_template("editsalesadform.html", ad=ad, tags=ads_tags)
 
-@app.route("/updatesalesad/<int:id>", methods=["POST"])
+@app.route("/updatesalesad/<int:id>", methods=["GET", "POST"])
 def updatesalesad(id):
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
