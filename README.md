@@ -1,7 +1,7 @@
 # tsoha-fleamarket
-A web app for selling items from person to person. Each user is an admin or regular user.
+A web app for selling items from person to person. Each user is an admin or regular user. Post an ad, quick search for ads by title or do an advanced search. Posted ads are also categorized by tag. To arrange a sale you may post private or public messages on an ad's page.
 
-## Planned basic functionality
+## Basic functionality
 - A user can create a new account
 - A user can log in and out
 - A user can remove their account
@@ -16,7 +16,7 @@ A web app for selling items from person to person. Each user is an admin or regu
 - An admin can grant another user admin priviliges.
 
 ## Current state of the app
-All of the basic user functions have been implemented. Aside from possible appearance changes, the app is ready.
+All of the basic user functions have been implemented. The app is ready.
 
 ## Heroku testing
 The app can be found on Heroku at https://tsoha-fleamarket.herokuapp.com
